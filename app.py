@@ -590,12 +590,16 @@ def pyvis_from_kg(nodes_df, edges_df, height="780px"):
     net.barnes_hut()
     return inject_fullscreen(net.generate_html())
 
+print(f"=== HF_REPO_ID={repr(HF_REPO_ID)} HF_TOKEN={'set' if HF_TOKEN else 'EMPTY'} ===", flush=True)
+
 st.title("CitationHub")
+print("=== st.title done ===", flush=True)
 st.caption("Explore influential papers (top 5% cited), their citation networks, and knowledge graphs.")
 
 _loading_placeholder = st.empty()
 
 with st.sidebar:
+    print("=== entered sidebar ===", flush=True)
     st.subheader("Data source")
     if HF_REPO_ID:
         data_dir_val = "hf"
@@ -604,8 +608,10 @@ with st.sidebar:
         data_dir_val = st.text_input("Parquet directory", str(DEFAULT_DATA_DIR))
 
     try:
+        print(f"=== calling load_data({data_dir_val!r}) ===", flush=True)
         _loading_placeholder.info("⏳ Loading CitationHub data… this may take a moment on first visit.")
         seed, events, citing, filters, overview = load_data(data_dir_val)
+        print("=== load_data done ===", flush=True)
         _loading_placeholder.empty()
         st.success("Data loaded")
     except Exception as e:
