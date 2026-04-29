@@ -1,6 +1,6 @@
 # CitationHub
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue)](https://citationdatabase.streamlit.app)
+[![Website Demo](https://img.shields.io/badge/Live-Demo-blue)](https://citationdatabase.streamlit.app)
 [![HuggingFace Dataset](https://img.shields.io/badge/Dataset-HuggingFace-orange)](https://huggingface.co/datasets/Daniel0315/CitationHub)
 [![HuggingFace Space](https://img.shields.io/badge/HuggingFace-Space-yellow)](https://huggingface.co/spaces/Daniel0315/cithub_website)
 
