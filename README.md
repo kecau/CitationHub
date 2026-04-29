@@ -209,15 +209,13 @@ If you use CitationHub in your research, please cite:
   title={CitationHub: A Large-Scale Multi-disciplinary Citation Context Database},
   author={Nam, Seohyun and others},
   year={2026},
-  publisher={Zenodo},
-  doi={10.5281/zenodo.18536895}
-}
-```
+  publisher={Hugging Face},
+  url={https://huggingface.co/datasets/Daniel0315/CitationHub}
+}```
 
 
 ---
 
-##  Future Work
 
 We are expanding CitationHub toward:
 
