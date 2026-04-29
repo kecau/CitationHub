@@ -6,6 +6,7 @@ Explore influential papers, citation networks, citation contexts, and knowledge 
 [![HuggingFace Dataset](https://img.shields.io/badge/Dataset-HuggingFace-orange)](https://huggingface.co/datasets/Daniel0315/CitationHub)
 [![HuggingFace Space](https://img.shields.io/badge/HuggingFace-Space-yellow)](https://huggingface.co/spaces/Daniel0315/cithub_website)
 
+![CitationHub Demo System](./assets/citationhub_screenshot.png)
 ---
 
 ## Public Access
@@ -52,7 +53,7 @@ This enables more fine-grained and explainable scholarly analysis.
 
 ##  System Interface
 
-![CitationHub Demo System](./assets/citationhub_screenshot.png)
+
 
 The platform provides several interactive modules for citation exploration and knowledge graph analysis.
 
