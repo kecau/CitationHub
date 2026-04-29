@@ -1,8 +1,5 @@
 from __future__ import annotations
 
-import sys
-print("=== CitationHub app.py starting ===", flush=True)
-
 import base64
 import os
 from pathlib import Path
@@ -32,7 +29,6 @@ def csv_download_link(data: bytes, filename: str, label: str) -> None:
 HF_TOKEN   = os.environ.get("HF_TOKEN", "")
 
 st.set_page_config(page_title="CitationHub", page_icon="📚", layout="wide")
-print("=== set_page_config done ===", flush=True)
 
 ALLOWED_INTENTS = [
     "background","uses","similarities","motivation",
@@ -64,19 +60,15 @@ def fmt_num(x):
     except: return "-"
 
 def _hf_download(filename: str) -> str:
-    print(f"=== HF download START: {filename} ===", flush=True)
     from huggingface_hub import hf_hub_download
-    path = hf_hub_download(
+    return hf_hub_download(
         repo_id=HF_REPO_ID, repo_type="dataset",
         filename=f"data/{filename}", token=HF_TOKEN or None,
     )
-    print(f"=== HF download DONE: {filename} -> {path} ===", flush=True)
-    return path
 
-def _read(filename: str, data_dir: Path | None = None) -> pd.DataFrame:
-    if HF_REPO_ID:
-        return pd.read_parquet(_hf_download(filename))
-    return pd.read_parquet(data_dir / filename)
+def _read(filename: str, data_dir: Path | None = None, columns: list | None = None) -> pd.DataFrame:
+    path = _hf_download(filename) if HF_REPO_ID else str(data_dir / filename)
+    return pd.read_parquet(path, columns=columns, engine="pyarrow")
 
 def plotly_network_fig(
     nodes_df: pd.DataFrame,
@@ -304,13 +296,34 @@ def inject_fullscreen(html: str) -> str:
     """
     return html.replace("</body>", extra + "</body>")
 
+_SEED_COLS = [
+    "seed_paper_id","doi","title","publication_name","creator","affilname",
+    "affiliation_city","affiliation_country","group","cover_date","citedby_count",
+    "author_id","affiliation_id","country_id","field_id","journal_id",
+]
+_EVENT_COLS = [
+    "citation_event_id","cited_seed_paper_id","citing_paper_id",
+    "citing_title","citing_doi","citing_year","citing_venue",
+    "primary_intent","contexts","context_count","intent_count","is_influential","field_id",
+]
+_CITING_COLS = ["citing_paper_id","doi","title","year","venue","oa_pdf"]
+
+def _safe_cols(path: str, wanted: list) -> list:
+    import pyarrow.parquet as pq
+    available = pq.read_schema(path).names
+    return [c for c in wanted if c in available]
+
 @st.cache_data(show_spinner=False)
 def load_data(data_dir_str: str):
     d = None if HF_REPO_ID else Path(data_dir_str)
 
-    seed_df   = _read("seed_cited_papers_normalized.parquet", d)
-    events_df = _read("citation_events_normalized.parquet", d)
-    citing_df = _read("citing_papers_normalized.parquet", d)
+    seed_path   = _hf_download("seed_cited_papers_normalized.parquet") if HF_REPO_ID else str(d / "seed_cited_papers_normalized.parquet")
+    events_path = _hf_download("citation_events_normalized.parquet")   if HF_REPO_ID else str(d / "citation_events_normalized.parquet")
+    citing_path = _hf_download("citing_papers_normalized.parquet")     if HF_REPO_ID else str(d / "citing_papers_normalized.parquet")
+
+    seed_df   = pd.read_parquet(seed_path,   columns=_safe_cols(seed_path,   _SEED_COLS),   engine="pyarrow")
+    events_df = pd.read_parquet(events_path, columns=_safe_cols(events_path, _EVENT_COLS),  engine="pyarrow")
+    citing_df = pd.read_parquet(citing_path, columns=_safe_cols(citing_path, _CITING_COLS), engine="pyarrow")
 
     seed = pd.DataFrame({
         "seed_paper_id":  seed_df["seed_paper_id"],
@@ -382,21 +395,20 @@ def load_data(data_dir_str: str):
 
 @st.cache_data(show_spinner=False)
 def load_authors_data(data_dir_str: str) -> pd.DataFrame:
-    """Analytics 탭에서만 사용 — 탭 진입 시 로드"""
-    d = None if HF_REPO_ID else Path(data_dir_str)
-    return _read("authors.parquet", d)
+    return _read("authors.parquet", None if HF_REPO_ID else Path(data_dir_str),
+                 columns=["author_id","author_name"])
 
 @st.cache_data(show_spinner=False)
 def load_geo_data(data_dir_str: str) -> pd.DataFrame:
-    """Geographic Map 탭에서만 사용 — 탭 진입 시 로드"""
-    d = None if HF_REPO_ID else Path(data_dir_str)
-    return _read("affiliation_geo.parquet", d)
+    return _read("affiliation_geo.parquet", None if HF_REPO_ID else Path(data_dir_str),
+                 columns=["affiliation_name","city_name","country_name"])
+
+_KG_NODE_COLS = ["node_id","node_type","label","doi","publication_name","citedby_count"]
 
 @st.cache_data(show_spinner=False)
 def load_kg_nodes(data_dir_str: str) -> pd.DataFrame:
-    """kg_nodes 전체 로드 (3.4M rows, ~160MB 파일)"""
-    d = None if HF_REPO_ID else Path(data_dir_str)
-    return _read("kg_nodes.parquet", d)
+    path = _hf_download("kg_nodes.parquet") if HF_REPO_ID else str(Path(data_dir_str) / "kg_nodes.parquet")
+    return pd.read_parquet(path, columns=_safe_cols(path, _KG_NODE_COLS), engine="pyarrow")
 
 @st.cache_data(show_spinner=False)
 def get_parquet_path(filename: str, data_dir_str: str) -> str:
@@ -593,16 +605,12 @@ def pyvis_from_kg(nodes_df, edges_df, height="780px"):
     net.barnes_hut()
     return inject_fullscreen(net.generate_html())
 
-print(f"=== HF_REPO_ID={repr(HF_REPO_ID)} HF_TOKEN={'set' if HF_TOKEN else 'EMPTY'} ===", flush=True)
-
 st.title("CitationHub")
-print("=== st.title done ===", flush=True)
 st.caption("Explore influential papers (top 5% cited), their citation networks, and knowledge graphs.")
 
 _loading_placeholder = st.empty()
 
 with st.sidebar:
-    print("=== entered sidebar ===", flush=True)
     st.subheader("Data source")
     if HF_REPO_ID:
         data_dir_val = "hf"
@@ -611,7 +619,6 @@ with st.sidebar:
         data_dir_val = st.text_input("Parquet directory", str(DEFAULT_DATA_DIR))
 
     try:
-        print(f"=== calling load_data({data_dir_val!r}) ===", flush=True)
         _loading_placeholder.info("⏳ Loading CitationHub data… this may take a moment on first visit.")
         seed, events, citing, filters, overview = load_data(data_dir_val)
         print("=== load_data done ===", flush=True)
