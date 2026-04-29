@@ -52,18 +52,14 @@ This enables more fine-grained and explainable scholarly analysis.
 ---
 
 
-##🎥 Quick Demo Preview
+##  Demo video
 
 ![Demo GIF](./assets/demo.gif)
 
-The GIF above demonstrates the main workflow of the CitationHub system, including citation context exploration, citation network analysis, knowledge graph visualization, and interactive dashboard navigation.
-
+The video above demonstrates the main workflow of the CitationHub system, including citation context exploration, citation network analysis, knowledge graph visualization, and interactive dashboard navigation.
 Users can efficiently explore citation relationships, intent-aware citation behaviors, and multidisciplinary scholarly connections through the platform.
-
 The platform provides several interactive modules for citation exploration and knowledge graph analysis.
 
-
-The platform provides several interactive modules for citation exploration and knowledge graph analysis.
 
 ---
 
