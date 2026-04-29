@@ -5,6 +5,7 @@
 [![HuggingFace Space](https://img.shields.io/badge/HuggingFace-Space-yellow)](https://huggingface.co/spaces/Daniel0315/cithub_website)
 
 Explore influential papers, citation networks, citation contexts, and knowledge graphs across multidisciplinary scientific domains.
+
 ![CitationHub Demo System](./assets/citationhub_screenshot.png)
 ---
 
