@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import base64
 import os
@@ -16,7 +16,7 @@ import streamlit.components.v1 as components
 HF_REPO_ID = os.environ.get("HF_REPO_ID", "")
 
 def csv_download_link(data: bytes, filename: str, label: str) -> None:
-    """st.download_button 대신 base64 HTML 링크로 다운로드 — 서버 연결 불필요."""
+
     b64 = base64.b64encode(data).decode()
     st.markdown(
         f'<a href="data:text/csv;base64,{b64}" download="{filename}" '
@@ -52,7 +52,7 @@ NODE_TYPE_COLORS = {
 
 DEFAULT_DATA_DIR = Path(os.environ.get(
     "CITATIONHUB_DATA_DIR",
-    r"C:\Users\user\OneDrive\바탕 화면\Citehub_huggingface\data",
+    "/tmp/citationhub_data",
 ))
 
 def fmt_num(x):
@@ -77,7 +77,7 @@ def plotly_network_fig(
     height: int = 750,
     seed_node_ids: list | None = None,
 ) -> go.Figure:
-    """SVG 기반 Plotly 네트워크 그래프 — 확대해도 선명."""
+
     G = nx.Graph()
     node_meta: dict = {}
     for _, row in nodes_df.iterrows():
@@ -163,7 +163,7 @@ def plotly_network_fig(
     return fig
 
 def plotly_ontology_fig(height: int = 820) -> go.Figure:
-    """CitationHub 온톨로지 구조 — Plotly SVG. 각 노드에 속성값 표시."""
+
 
     NODE_PROPS = {
         "seed_paper":     "doi · title · journal\nauthor · affiliation\ncountry · field · citedby_count",
@@ -279,7 +279,7 @@ def inject_fullscreen(html: str) -> str:
                 padding:5px 10px;border-radius:6px;">
       🖱 Scroll: zoom &nbsp;|&nbsp; Drag: pan &nbsp;|&nbsp; Click node: info</div>
     <script>
-    // HiDPI 캔버스 해상도 보정 (Canvas 흐림 최소화)
+
     (function fixDPI() {
       var canvas = document.querySelector('#mynetwork canvas');
       if (!canvas) { setTimeout(fixDPI, 200); return; }
@@ -471,7 +471,7 @@ def load_kg_nodes(data_dir_str: str) -> pd.DataFrame:
 
 @st.cache_data(show_spinner=False)
 def get_parquet_path(filename: str, data_dir_str: str) -> str:
-    """파일 경로 반환 (HF면 로컬 캐시에 다운로드 후 경로 반환)"""
+
     if HF_REPO_ID:
         return _hf_download(filename)
 
@@ -479,7 +479,7 @@ def get_parquet_path(filename: str, data_dir_str: str) -> str:
 
 @st.cache_data(show_spinner=False)
 def query_kg_edges_for_node(node_id: str, kg_edges_path: str, max_edges: int = 80) -> pd.DataFrame:
-    """DuckDB: 특정 노드의 엣지만 parquet에서 바로 쿼리 (전체 로드 없음)"""
+
     import duckdb
     safe_path = kg_edges_path.replace("\\", "/")
     safe_node = node_id.replace("'", "''")
@@ -493,7 +493,7 @@ def query_kg_edges_for_node(node_id: str, kg_edges_path: str, max_edges: int = 8
 
 @st.cache_data(show_spinner=False)
 def query_enriched_stats(enriched_path: str):
-    """DuckDB: enriched 전체 로드 없이 집계 통계만 쿼리"""
+
     import duckdb
     safe_path = enriched_path.replace("\\", "/")
 
@@ -517,7 +517,7 @@ def query_enriched_stats(enriched_path: str):
 
 @st.cache_data(show_spinner=False)
 def query_explorer_edges(node_id: str, kg_edges_path: str, max_edges: int = 60) -> pd.DataFrame:
-    """DuckDB: KG Explorer용 임의 노드 엣지 쿼리"""
+
     import duckdb
     safe_path = kg_edges_path.replace("\\", "/")
     safe_node = node_id.replace("'", "''")
@@ -575,7 +575,7 @@ def build_citing_table(df, limit=30):
             .drop_duplicates(subset=["citing_paper_id"]).head(limit))
 
 def get_cocited_papers(selected_seed_id, events, seed, top_n=15):
-    """선택된 seed paper를 인용한 논문들이 함께 인용한 다른 seed papers"""
+
     citing_ids = events[events["seed_paper_id"] == selected_seed_id]["citing_paper_id"].unique()
     cocited = (events[events["citing_paper_id"].isin(citing_ids) &
                       (events["seed_paper_id"] != selected_seed_id)]
@@ -587,7 +587,7 @@ def get_cocited_papers(selected_seed_id, events, seed, top_n=15):
                          on="seed_paper_id", how="left")
 
 def get_kg_subgraph(seed_doi: str, kg_nodes, kg_edges, max_edges=80):
-    """선택된 seed paper의 KG 1-hop 서브그래프 반환"""
+
     node_id = f"seed:{seed_doi}"
     edges = kg_edges[(kg_edges["source"] == node_id) |
                      (kg_edges["target"] == node_id)].head(max_edges)
@@ -598,7 +598,7 @@ def get_kg_subgraph(seed_doi: str, kg_nodes, kg_edges, max_edges=80):
     return nodes, edges
 
 def get_explorer_subgraph(search_node_id: str, kg_nodes, kg_edges, max_edges=60):
-    """KG Explorer: 임의 노드 기준 서브그래프"""
+
     edges = kg_edges[(kg_edges["source"] == search_node_id) |
                      (kg_edges["target"] == search_node_id)].head(max_edges)
     if edges.empty:
@@ -647,7 +647,7 @@ def pyvis_ontology():
     return inject_fullscreen(net.generate_html())
 
 def pyvis_from_kg(nodes_df, edges_df, height="780px"):
-    """kg_nodes / kg_edges DataFrame으로 pyvis 그래프 생성"""
+
     net = Network(height=height, width="100%", bgcolor="#ffffff", font_color="#111827", directed=True)
     for _, row in nodes_df.iterrows():
         ntype = row.get("node_type","")
