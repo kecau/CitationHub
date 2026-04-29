@@ -193,7 +193,6 @@ Field-specific citation behaviors and knowledge evolution analysis.
 
 ```text
 CitationHub/
-│
 ├── app.py
 ├── requirements.txt
 └── README.md
