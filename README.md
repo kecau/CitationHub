@@ -52,7 +52,7 @@ This enables more fine-grained and explainable scholarly analysis.
 ---
 
 
-##  Demo video
+##  Quick Demo Preview
 
 ![Demo GIF](./assets/demo.gif)
 
