@@ -198,24 +198,6 @@ CitationHub/
 └── README.md
 ```
 
----
-
-##  Citation
-
-If you use CitationHub in your research, please cite:
-
-```bibtex
-@dataset{citationhub2026,
-  title={CitationHub: A Large-Scale Multi-disciplinary Citation Context Database},
-  author={Nam, Seohyun and others},
-  year={2026},
-  publisher={Hugging Face},
-  url={https://huggingface.co/datasets/Daniel0315/CitationHub}
-}```
-
-
----
-
 
 We are expanding CitationHub toward:
 
