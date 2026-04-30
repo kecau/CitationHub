@@ -70,6 +70,11 @@ def _read(filename: str, data_dir: Path | None = None, columns: list | None = No
     path = _hf_download(filename) if HF_REPO_ID else str(data_dir / filename)
     return pd.read_parquet(path, columns=columns, engine="pyarrow")
 
+def _safe_cols(path: str, wanted: list) -> list:
+    import pyarrow.parquet as pq
+    avail = set(pq.read_schema(path).names)
+    return [c for c in wanted if c in avail]
+
 def plotly_network_fig(
     nodes_df: pd.DataFrame,
     edges_df: pd.DataFrame,
