@@ -60,6 +60,7 @@ The video above demonstrates the main workflow of the CitationHub system, includ
 Users can efficiently explore citation relationships, intent-aware citation behaviors, and multidisciplinary scholarly connections through the platform.
 The platform provides several interactive modules for citation exploration and knowledge graph analysis.
 
+**🎥 See CitationHub in action:** [Watch the interactive demo](https://app.arcade.software/share/videos/82VtIYDsOhm1eMdnMzDf)
 
 ---
 
