@@ -1,28 +1,30 @@
 # CitationHub
 
-[![Website Demo](https://img.shields.io/badge/Live-Demo-blue)](https://app.arcade.software/share/videos/82VtIYDsOhm1eMdnMzDf)
-[![HuggingFace Dataset](https://img.shields.io/badge/Dataset-HuggingFace-orange)](https://huggingface.co/datasets/Daniel0315/CitationHub)
+[![Official Website](https://img.shields.io/badge/Official-Website-black)](https://citation-hub-website.vercel.app/)
+[![Interactive Dashboard](https://img.shields.io/badge/Live-Demo-blue)](https://app.arcade.software/share/videos/82VtIYDsOhm1eMdnMzDf)
 [![HuggingFace Space](https://img.shields.io/badge/HuggingFace-Space-yellow)](https://huggingface.co/spaces/Daniel0315/cithub_website)
+[![HuggingFace Dataset](https://img.shields.io/badge/Dataset-HuggingFace-orange)](https://huggingface.co/datasets/Daniel0315/CitationHub)
+
 
 Explore influential papers, citation networks, citation contexts, and knowledge graphs across multidisciplinary scientific domains.
 
 ![CitationHub Demo System](./assets/citationhub_screenshot.png)
+
 ---
 
 ## Public Access
 
-### Demo Website
+### Official Website
+https://citation-hub-website.vercel.app/
 
+### Interactive Dashboard
 https://citationdatabase.streamlit.app
 
 ### Hugging Face Space
-
 https://huggingface.co/spaces/Daniel0315/cithub_website
 
 ### Hugging Face Dataset
-
 https://huggingface.co/datasets/Daniel0315/CitationHub
-
 
 ---
 
