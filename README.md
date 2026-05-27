@@ -1,9 +1,9 @@
 # CitationHub
 
-[![Official Website](https://img.shields.io/badge/Official-Website-black)](https://citation-hub-website.vercel.app/)
+[![Official Website](https://img.shields.io/badge/Official-Website-green)](https://citation-hub-website.vercel.app/)
 [![Interactive Dashboard](https://img.shields.io/badge/Live-Demo-blue)](https://app.arcade.software/share/videos/82VtIYDsOhm1eMdnMzDf)
 [![HuggingFace Space](https://img.shields.io/badge/HuggingFace-Space-yellow)](https://huggingface.co/spaces/Daniel0315/cithub_website)
-[![HuggingFace Dataset](https://img.shields.io/badge/Dataset-HuggingFace-orange)](https://huggingface.co/datasets/Daniel0315/CitationHub)
+[![HuggingFace Dataset](https://img.shields.io/badge/HuggingFace-Dataset-orange)](https://huggingface.co/datasets/Daniel0315/CitationHub)
 
 
 Explore influential papers, citation networks, citation contexts, and knowledge graphs across multidisciplinary scientific domains.
