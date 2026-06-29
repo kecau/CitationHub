@@ -8,7 +8,7 @@
 
 Explore influential papers, citation networks, citation contexts, and knowledge graphs across multidisciplinary scientific domains.
 
-![CitationHub Website UI](./assets/CitationHub_Website_UI.png)
+![CitationHub Website UI](./assets/CitationHub_Website_UI_ver2.png)
 
 ---
 
